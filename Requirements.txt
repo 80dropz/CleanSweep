@@ -1,0 +1,6 @@
+pip install customtkinter
+pip install datetime
+pip install subprocess
+pip install tkinter
+pip install elevate
+pip install os
