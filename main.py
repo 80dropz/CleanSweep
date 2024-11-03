@@ -2,15 +2,25 @@ import os
 import customtkinter
 import subprocess
 from datetime import datetime
-logfilecreate = open("log.txt", "w")
+
+
+#checks and creates a logfile to store data
+try:
+    logfilecreate = open("log.txt", "r")
+except:
+    logfilecreate = open("log.txt", "w")
+
+#appends the text in the log aswell as creating the time variable
 log = open("log.txt", "a")
 time = datetime.now()
+
+
 def cleaning():
     log.write(f"\n cleaning button pressed at {time}")
     try:
         os.system(f'python cleaner.py')
     except FileNotFoundError:
-        log.write(f"\n File not found (this is possibly due to not download zipfile from github) {time}")
+        log.write(f"\n File not found (this is possibly due to not downloading zipfile from github) {time}")
 
 def optimization():
     log.write(f"\n Optimization button pressed at {time}")
@@ -18,7 +28,7 @@ def optimization():
     try:
         os.system(f'python optimize.py')
     except FileNotFoundError:
-        log.write(f"\n File not found (this is possibly due to not download zipfile from github) {time}")
+        log.write(f"\n File not found (this is possibly due to not downloading zipfile from github) {time}")
 
 main = customtkinter.CTk()
 main.title("Windows Cleaner / Optimizer")
