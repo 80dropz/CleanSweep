@@ -6,27 +6,28 @@ from os import listdir
 import tkinter
 from datetime import datetime
 from elevate import elevate
+try:
+    elevate()
+except:
+    print("Some features may be dissabled due to not running in administartor mode \n Some features may be dissabled due to not running in administartor mode \nSome features may be dissabled due to not running in administartor mode \nSome features may be dissabled due to not running in administartor mode \n")
 
-
-elevate()
+#grabs the 4 letter handle of the user running the script
 whoami = subprocess.run(["whoami"], capture_output=True, text=True, check=True)
 username = whoami.stdout.strip()
 user = username[-5:]
+
+#starts the log appending on this script
 log = open("log.txt", "a")
 time = datetime.now()
+
 filepathh = os.path.abspath("main.py")
 filepath = filepathh[:-7]
 batch = f"{filepath}batch-scripts"
+#counts the number of optimizations made
 optimzations = 0
 
 
-
-def basiccoffon():
-    if basic.get():
-        print("true")
-    else:
-        print("False")
-    
+#just deletes temp folder and clears the recyling bin
 def basiccleanup():
     global optimzations
     print("openeing tempfiles :()")
@@ -43,6 +44,9 @@ def basiccleanup():
     subprocess.run("rd /s %systemdrive%\$Recycle.bin", shell=True)
     optimzations = optimzations + 1
 
+
+
+#should clear the cache of most common apps installed in computers
 def clearcache():
     global optimzations
     if os.path.exists("C:\\ProgramData\\LGHUB"):
@@ -88,13 +92,16 @@ def speedlist():
     global corrupted
 
     if speedlists.get():
+        #creates the variables for all the checkboxes in the function so when running will check for them and run the correct command
         powercfgvar = tkinter.IntVar(value=0)
         ramvar = tkinter.IntVar(value=0)
         drivervar = tkinter.IntVar(value=0)
         corruptedvar = tkinter.IntVar(value=0)
+        
+        #just creates the buttons, text, and placement of the buttons
         powercfg = customtkinter.CTkCheckBox(main, text="Preformance Mode", onvalue=1, offvalue=0, variable=powercfgvar, width=30, height=15)
         powercfg.place(relx=.125, rely=.35)
-        ram = customtkinter.CTkCheckBox(main, text="ram Optimization", onvalue=1, offvalue=0, variable=ramvar, width=30, height=15)
+        ram = customtkinter.CTkCheckBox(main, text="ram Optimization", onvalue=1, offvalue=0, variable=ramvar, width=30, height=15, command=lambda: print("ram is clicked"))
         ram.place(relx=.125, rely=.45)
         driver = customtkinter.CTkCheckBox(main, text="Driver Optimization", onvalue=1, offvalue=0, variable=drivervar, width=30, height=15)
         driver.place(relx=.125, rely=.55)
@@ -105,6 +112,8 @@ def speedlist():
         ram.destroy()
         driver.destroy()
         corrupted.destroy()
+
+#should run the corrupted file remover from batch scripts
 def corruptedoptimization():
     global optimzations
     try:
@@ -113,6 +122,8 @@ def corruptedoptimization():
         optimzations = optimzations + 1
     except:
         log.write(f"Unkown error has accoured please report to 80dropz on twitter")
+
+#should optimize your drivers i can check this
 def driveroptimization():
     global optimzations
     try:
@@ -123,6 +134,11 @@ def driveroptimization():
         log.write(f"\n File not found (this is possibly due to not download zipfile from github) {time}")
     except:
         log.write(f"Unkown error has accoured please report to 80dropz on twitter")
+
+
+
+
+#runs the ram optimization script off the optimized folder
 def ramoptimization():
     global optimzations
     try:
@@ -133,16 +149,16 @@ def ramoptimization():
         log.write(f"\n File not found (this is possibly due to not download zipfile from github) {time}")
     except:
         log.write(f"Unkown error has accoured please report to 80dropz on twitter")
+
+
+
+#runs the higher performance script from batch scripts folder
 def high_performance():
     global optimzations
     try:
         # Run the powercfg command and capture the output
         result = subprocess.run(["powercfg", "-list"], capture_output=True, text=True, check=True)
-        
-
         power_plans = result.stdout.splitlines()
-        
-
         for line in power_plans:
             if "(High performance)" in line:
                 parts = line.split()
@@ -152,7 +168,6 @@ def high_performance():
                 print(f"set power config to high performance at {time}")
                 log.write(f"\n set power config to high performance at {time}")
                 optimzations = optimzations + 1
-
     except subprocess.CalledProcessError as e:
         log.write(f"An error occurred while running powercfg: {e}")
     except Exception as e:
@@ -163,40 +178,53 @@ def high_performance():
 
 
 
-
+#checks if for every optimization to see if it has been checked or not
 def start():
     try:
         if cache.get():
+            log.write(f"cache ran noramlly at {time}")
             clearcache()
             print("Cleared Cache")
             pass
         if basic.get():
+            log.write(f"basic configuration ran noramlly at {time}")
             print("basic error")
             basiccleanup()
             print("basic cleanup")
             pass
         if ram.get():
+            log.write(f"ram ran noramlly at {time}")
             print("ram optimization")
             ramoptimization()
             pass
         if powercfg.get():
+            log.write(f"powercfg ran noramlly at {time}")
             high_performance()
             print("powercfg")
             pass
         if driver.get():
+            log.write(f"driver ran noramlly at {time}")
             driveroptimization()
             print("Driver Optimized")
         if corrupted.get():
+            log.write(f"Corrupted ran noramlly at {time}")
             corruptedoptimization()
             print("Corrupted Optimized")
             pass
         else:
             print("none selected")
             pass
+        log.write(f"\n finished optimization at {time} optimized {optimzations} things")
+        finished()
     except:
+        log.write(f"no optimizations were found {time}")
         print("none selected")
         pass
 
+
+
+def finished():
+    print("\n \n \n \n \n \n \n \n YOUR PC HAS BEEN OPTIMIZED")
 
 
 
@@ -225,8 +253,9 @@ debloatlistvar = tkinter.IntVar(value=0)
 debloatlist = customtkinter.CTkCheckBox(main, text="Debloat Windows", onvalue=1, offvalue=0, command=debloatlistcmd, variable=debloatlistvar)
 debloatlist.place(relx=.8, rely=.3, anchor="center")
 
+#creats the basic cleanup (overall optimzations)
 basicvar = tkinter.IntVar(value=0)
-basic = customtkinter.CTkCheckBox(main, text="basic Cleanup", onvalue=1, offvalue=0, variable=basicvar, command=basiccoffon)
+basic = customtkinter.CTkCheckBox(main, text="basic Cleanup", onvalue=1, offvalue=0, variable=basicvar)
 basic.place(relx=.5, rely=.3, anchor="center")
 
 main.mainloop()
