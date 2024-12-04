@@ -127,18 +127,25 @@ def clearcache():
             print(f"Path not found: {path}")
 
 
+
+#coming soon but if you have two files named main it would delete them which is obvisouly not good almost deleted soooo main of my coding
 def systemscandef(directory):
+    size = 0
     global sizeremoved
-    for file in os.listdir(directory):
-        print(file)
+    for file in os.scandir(directory):
         if file.is_file():
             if os.path not in filesfound:
                 filesfound.append(os.path.basename(file))
+                totalsize = get_directory_size(file)
             else:
+                print(f"removed {file} as it was a duplicate")
                 size += get_directory_size(file)
                 os.remove(file)
         elif file.is_dir():
             systemscandef(os.path.join(directory, file))
+            
+    print(f"total size: {totalsize}")
+    print(filesfound)
     print("Done!")
 
 
@@ -153,9 +160,9 @@ def debloatlistcmd():
     if debloatlist.get():
         cachevar = tkinter.IntVar(value=0)
         systemscanvar = tkinter.IntVar(value=0)
-        systemscan = customtkinter.CTkCheckBox(main, text="System Scan (Will take a while)", onvalue=1, offvalue=0, variable=cachevar, width=30, height=15)
+        systemscan = customtkinter.CTkCheckBox(main, text="coming soon", onvalue=1, offvalue=0, variable=systemscanvar, width=30, height=15)
         systemscan.place(relx=.73, rely=.45)
-        cache = customtkinter.CTkCheckBox(main, text="Clear Cache", onvalue=1, offvalue=0, variable=systemscanvar, width=30, height=15)
+        cache = customtkinter.CTkCheckBox(main, text="Clear Cache", onvalue=1, offvalue=0, variable=cachevar, width=30, height=15)
         cache.place(relx=.73, rely=.35)
     else:
         systemscan.destroy()
@@ -267,9 +274,9 @@ def start():
             pass
         try:
             if systemscan.get():
-                print("scanning system")
-                systemscandef("C:\\")
-                print("Scanned System")
+                print("Coming soon")
+                #systemscandef("D:\cracked.io")
+                print("I should delete your system 32 for clicking this")
                 pass
         except:
             pass
