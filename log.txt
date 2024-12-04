@@ -1,0 +1,3 @@
+
+ Main Gui started at 2024-10-27 23:36:04.129961
+ Optimization button pressed at 2024-10-27 23:36:04.129961
